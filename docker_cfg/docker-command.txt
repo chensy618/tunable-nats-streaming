@@ -1,0 +1,9 @@
+docker run -d --name nats-streaming -p 4222:4222 -p 8222:8222 -v D:/Github/nats-embedded/docker_cfg/nats-streaming.conf:/nats-streaming.conf nats-streaming -config /nats-streaming.conf
+
+docker rm -f nats-streaming
+
+http://localhost:8222 
+
+docker start nats-streaming
+
+docker stop nats-streaming
