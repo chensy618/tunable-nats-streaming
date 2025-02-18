@@ -46,13 +46,14 @@ class UdpToNats:
                 except ValueError:
                     print("Invalid message format, discarding...")
                     continue
-
-                # Handle partial reliability (randomly drop 30% of messages)
-                if self.is_partial_reliable and is_partial_reliable and random.random() < 0.3:
+                
+                # Handle partial reliability (randomly drop 10% of messages)
+                if self.is_partial_reliable and is_partial_reliable and random.random() < 0.1:
                     print(f"Dropped message due to partial reliability: {message}")
                     continue
 
-                # Handle unordered messages
+                # Handle loose ordered messages, store the messages in buffer, 
+                # and then shuffle them to simulate unordered characteristics
                 if self.is_loose_order and is_loose_order:
                     self.messages.append(message)
                     if len(self.messages) > 1:
@@ -74,7 +75,7 @@ class UdpToNats:
                 break
 
     async def stop(self):
-        """Gracefully stop the NATS connection and exit"""
+        """Stop the NATS connection and exit"""
         print("\nStopping UDP to NATS relay...")
         self.running = False  # Exit main loop
         if self.sock:
@@ -98,7 +99,7 @@ async def main():
     relay = UdpToNats()
     await relay.connect_nats()
 
-    # Handle Ctrl+C to exit gracefully
+    # Handle Ctrl+C to exit
     def handle_ctrl_c():
         print("\nReceived Ctrl+C. Stopping UDP to NATS relay...")
         asyncio.run(relay.stop())

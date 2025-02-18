@@ -123,5 +123,5 @@ buildNumber.properties
 .mvn/timing.properties
 .mvn/wrapper/maven-wrapper.jar
 .flattened-pom.xml
-
+__pycache__/
 # End of https://www.gitignore.io/api/java,maven,intellij+all
